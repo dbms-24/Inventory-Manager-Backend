@@ -1,7 +1,10 @@
 package com.dbms.backend.models.dresses;
-// id here is dressId
-public record DressDetails(int id, String name, String brand, String gender, String size, String color, int required_quantity) {
-    public DressDetails {
+
+import com.dbms.backend.models.stock.StockDescription;
+import java.util.List;
+
+public record DressWithStock(int id, String name, String brand, String gender, String size, String color, int required_quantity, List<StockDescription> stockDescription) {
+    public DressWithStock {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or empty");
         }

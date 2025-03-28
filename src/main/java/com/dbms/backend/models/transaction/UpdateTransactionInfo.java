@@ -1,12 +1,11 @@
 package com.dbms.backend.models.transaction;
 
 import java.time.LocalDate;
-import java.util.List;
-import com.dbms.backend.models.stock.StockDescription;
 
 
-public record CustomerTransaction(int id, int customer_id, LocalDate transaction_date, double amount, List<StockDescription> StockDescription) {
-    public CustomerTransaction {
+
+public record UpdateTransactionInfo(int id, int resp_id, LocalDate transaction_date, double amount) {
+    public UpdateTransactionInfo {
         if (transaction_date == null) {
             throw new IllegalArgumentException("Date cannot be null");
         }

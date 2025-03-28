@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.dbms.backend.utils.GetTokenInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
 @RestController
 @RequestMapping("/admin")
 public class AdminController{
@@ -29,10 +31,14 @@ public class AdminController{
     @Autowired
     GetTokenInfo getTokenInfo;
 
-    @GetMapping("/healthy")
-    public String healthy (HttpServletRequest request){
-      String id = getTokenInfo.getId(request);
-      return id;
+    @GetMapping("/get_info")
+    public ResponseEntity<UserDisplayDetails> healthy (HttpServletRequest request){
+        try{
+        int id = Integer.parseInt(getTokenInfo.getId(request));
+        return ResponseEntity.ok(userService.getUserById(id));
+        }catch(Exception e){
+        return ResponseEntity.status(500).body(null);
+      }
     }
 
 

@@ -14,29 +14,40 @@ public class CustomerRepo {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<CustomerDetails> getCustomer() {
+    public List<CustomerDetails> getCustomer(int user_id) {
         try{
-            String sql = "SELECT * FROM customer";
-            return jdbcTemplate.query(sql,new CustomerDetailsRowMapper());
+            String sql = "SELECT * FROM customer WHERE user_id = ?";
+            return jdbcTemplate.query(sql,new CustomerDetailsRowMapper(), user_id);
 
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void addCustomer(CustomerDetails customerDetails) {
+    public void addCustomer(CustomerDetails customerDetails, int user_id) {
         try{
-            String sql = "INSERT INTO customer (name, address, email, phone_number, points) VALUES (?, ?, ?, ?, ?)";
-            jdbcTemplate.update(sql, customerDetails.name(), customerDetails.address(), customerDetails.email(), customerDetails.phone_number(), customerDetails.points());
+            System.out.println(customerDetails);
+            String sql = "INSERT INTO customer (name, address, email, phone_number, points, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sql, customerDetails.name(), customerDetails.address(), customerDetails.email(), customerDetails.phone_number(), customerDetails.points(), user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void updateCustomerPoints(int id, CustomerDetails customerDetails) {
+    public void updateCustomer(int id, CustomerDetails customerDetails, int user_id) {
         try{
-            String sql = "UPDATE customer SET name = ?, address = ?, email = ?, phone_number = ?, points = ? WHERE id = ?";
-            jdbcTemplate.update(sql,customerDetails.name(), customerDetails.address(), customerDetails.email(), customerDetails.phone_number(), customerDetails.points() , id);
+            System.out.println(customerDetails);
+            String sql = "UPDATE customer SET name = ?, address = ?, email = ?, phone_number = ?, points = ? WHERE id = ? AND user_id = ?";
+            jdbcTemplate.update(sql,customerDetails.name(), customerDetails.address(), customerDetails.email(), customerDetails.phone_number(), customerDetails.points() , id, user_id);
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteCustomerById(int cust_id, int user_id) {
+        try{
+            String sql = "DELETE FROM customer WHERE id = ? AND user_id = ?";
+            jdbcTemplate.update(sql,cust_id, user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }

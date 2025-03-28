@@ -19,37 +19,37 @@ public class SupplierRepo {
     }
     // SupplierRepo
 
-    public void addSupplier(SupplierDetails supplierDetails) {
+    public void addSupplier(SupplierDetails supplierDetails, int user_id) {
         try{
-            String sql = "INSERT INTO supplier (name, address) VALUES (?, ?)";
-            jdbcTemplate.update(sql, supplierDetails.name(), supplierDetails.address());
+            String sql = "INSERT INTO supplier (name, address, user_id) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, supplierDetails.name(), supplierDetails.address(), user_id);
         }catch(Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    public void updateSupplierById(int id, SupplierDetails supplierDetails) {
+    public void updateSupplierById(int id, SupplierDetails supplierDetails, int user_id) {
         try{
-            String sql = "UPDATE supplier SET name = ?, address = ? WHERE id = ?";
-            jdbcTemplate.update(sql, supplierDetails.name(), supplierDetails.address(), id);
+            String sql = "UPDATE supplier SET name = ?, address = ? WHERE id = ? AND user_id = ?";
+            jdbcTemplate.update(sql, supplierDetails.name(), supplierDetails.address(), id, user_id);
         }catch(Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    public void deleteSupplierById(int id) {
+    public void deleteSupplierById(int id, int user_id) {
         try{
-            String sql = "DELETE FROM supplier WHERE id = ?";
-            jdbcTemplate.update(sql, id);
+            String sql = "DELETE FROM supplier WHERE id = ? AND user_id = ?";
+            jdbcTemplate.update(sql, id, user_id);
         }catch(Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    public List<SupplierDetails> getSupplier() {
+    public List<SupplierDetails> getSupplier(int user_id) {
         try{
-            String sql = "SELECT * FROM supplier";
-            return jdbcTemplate.query(sql, new SupplierDetailsRowMapper());
+            String sql = "SELECT * FROM supplier WHERE user_id = ?";
+            return jdbcTemplate.query(sql, new SupplierDetailsRowMapper(), user_id);
         }catch(Exception e){
             throw new RuntimeException(e);
         }

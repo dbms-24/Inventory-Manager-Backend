@@ -23,14 +23,20 @@ public class UserService{
         }
     }
 
-     public void updateUserDetailsById(int id, String password, String name) {
+     public void updateUserNameById(int id, String name) {
         try{
-            userRepo.updateUserDetailsById(id, password, name);
+            userRepo.updateUserNameById(id, name);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    
+       public void updateUserPasswordById(int id, String password) {
+        try{
+            userRepo.updateUserPasswordById(id, password);
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }  
     public void deleteUserByAdmin(int id) {
         try{
             userRepo.deleteUserByAdmin(id);
@@ -46,6 +52,14 @@ public class UserService{
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public UserDisplayDetails getUserById(int id){
+      try{
+        return userRepo.getUserById(id);
+      }catch(Exception e){
+      throw new RuntimeException(e);
+    }
     }
 
 }

@@ -9,12 +9,15 @@ import com.dbms.backend.models.user.UserDisplayDetails;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.dbms.backend.repo.user.UserRowMapper;
 
 @Repository
 public class UserRepo{
      private JdbcTemplate jdbcTemplate;
+
 
     UserRepo(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -30,6 +33,9 @@ public class UserRepo{
   }
 
   public Boolean addUser(User curr_user){
+    if(curr_user.getRole().name() != "ADMIN" && curr_user.getRole().name() != "USER"){
+      throw new RuntimeException("Role is not valid");
+    }
     try {
         String sql = "INSERT INTO users (name, phone_number, password, role) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, curr_user.getName(), curr_user.getPhone_number(), curr_user.getPassword(), curr_user.getRole().name());
@@ -55,10 +61,20 @@ public class UserRepo{
   }
 
 
-    public void updateUserDetailsById(int id, String password, String name) {
+    public void updateUserNameById(int id, String name) {
         try{
-            String sql = "UPDATE users SET name = ?, password = ? WHERE id = ?";
-            jdbcTemplate.update(sql, name, password, id);
+            String sql = "UPDATE users SET name = ? WHERE id = ?";
+            jdbcTemplate.update(sql, name, id);
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateUserPasswordById(int id, String password) {
+        try{
+            String sql = "UPDATE users SET password = ? WHERE id = ?";
+            System.out.println("hashed Password "+ password);
+            jdbcTemplate.update(sql, password, id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -76,9 +92,18 @@ public class UserRepo{
     public List<UserDisplayDetails> getUsersDisplay() {
         try{
             String sql = "SELECT * FROM users";
-            return jdbcTemplate.query(sql, (rs, rowNum) -> new UserDisplayDetails(rs.getInt("id"), rs.getString("phone_number"), rs.getString("role"), rs.getString("name")));
+            return jdbcTemplate.query(sql, (rs, rowNum) -> new UserDisplayDetails(rs.getInt("id"), rs.getString("phone_number"), rs.getString("name"), rs.getString("role")));
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public UserDisplayDetails getUserById(int id){
+      try{
+        String sql = "SELECT * FROM users WHERE id = ?"; 
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new UserDisplayDetails(rs.getInt("id"), rs.getString("phone_number"), rs.getString("name"), rs.getString("role")), id).stream().findFirst().orElse(null);
+      }catch(Exception e){
+        throw new RuntimeException(e);
+      }
     }
 }

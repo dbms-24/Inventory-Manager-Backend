@@ -10,11 +10,13 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS employee (
     id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     role VARCHAR(255) NOT NULL,
     address VARCHAR(500) NOT NULL,
     join_date DATE NOT NULL,
-    salary DECIMAL(10,2) NOT NULL
+    salary DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS employee_email (
@@ -43,12 +45,14 @@ CREATE TABLE IF NOT EXISTS employee_leave (
 
 CREATE TABLE IF NOT EXISTS dress (
     id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     brand VARCHAR(255) NOT NULL,
     gender VARCHAR(10) NOT NULL,
     size VARCHAR(10) NOT NULL,
     color VARCHAR(50) NOT NULL,
-    required_quantity INT NOT NULL
+    required_quantity INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS inventory (
@@ -65,11 +69,13 @@ CREATE TABLE IF NOT EXISTS inventory (
 
 CREATE TABLE IF NOT EXISTS customer (
     id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     address VARCHAR(500) NOT NULL,
     phone_number VARCHAR(12) UNIQUE NOT NULL,
     email VARCHAR(255),
-    points INT NOT NULL
+    points INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS customer_transaction (
@@ -100,8 +106,10 @@ CREATE TABLE IF NOT EXISTS inventory_bought_by_customer (
 
 CREATE TABLE IF NOT EXISTS supplier (
     id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    address VARCHAR(500) NOT NULL
+    address VARCHAR(500) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS supplier_phone (
@@ -159,7 +167,9 @@ CREATE TABLE IF NOT EXISTS supplier_active_dress_collection (
 
 CREATE TABLE IF NOT EXISTS other_transaction (
     id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     transaction_date DATE NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
-    description VARCHAR(500) NOT NULL
+    description VARCHAR(500) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

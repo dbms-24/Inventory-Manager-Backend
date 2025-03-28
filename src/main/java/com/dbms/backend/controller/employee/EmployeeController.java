@@ -18,6 +18,8 @@ import com.dbms.backend.models.employee.EmployeeDetails;
 import com.dbms.backend.models.employee.EmployeeEmail;
 import com.dbms.backend.models.employee.EmployeePhone;
 import com.dbms.backend.service.employee.EmployeeService;
+import com.dbms.backend.utils.GetTokenInfo;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -27,23 +29,26 @@ import java.util.List;
 public class EmployeeController {
 
     // Employee Routes
-
+    @Autowired
+    GetTokenInfo getTokenInfo;
     @Autowired
     EmployeeService employeeService;
 
     @GetMapping
-    public ResponseEntity<List<EmployeeDetails>> getEmployee() {
+    public ResponseEntity<List<EmployeeDetails>> getEmployee(HttpServletRequest request) {
         try{
-            return ResponseEntity.ok(employeeService.getEmployee());
+            int user_id = Integer.parseInt(getTokenInfo.getId(request));
+            return ResponseEntity.ok(employeeService.getEmployee(user_id));
         }catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> addEmployee(@RequestBody EmployeeDetails employeeDetails) {
+    public ResponseEntity<Boolean> addEmployee(@RequestBody EmployeeDetails employeeDetails, HttpServletRequest request) {
         try{
-            employeeService.addEmployee(employeeDetails);
+            int user_id = Integer.parseInt(getTokenInfo.getId(request));
+            employeeService.addEmployee(employeeDetails, user_id);
             return ResponseEntity.ok(true);
         }catch (Exception e) {
             return ResponseEntity.status(500).body(false);
@@ -51,9 +56,10 @@ public class EmployeeController {
     }   
 
     @GetMapping("{id}")
-    public ResponseEntity<EmployeeCompleteDetails> getEmployeeById(@PathVariable("id") int id) {
+    public ResponseEntity<EmployeeCompleteDetails> getEmployeeById(@PathVariable("id") int id, HttpServletRequest request) {
         try{
-            EmployeeCompleteDetails employeeCompleteDetails = employeeService.getEmployeeDetailsById(id);
+            int user_id = Integer.parseInt(getTokenInfo.getId(request));
+            EmployeeCompleteDetails employeeCompleteDetails = employeeService.getEmployeeDetailsById(id, user_id);
             if(employeeCompleteDetails == null) {
                 return ResponseEntity.notFound().build();
             }
@@ -64,9 +70,10 @@ public class EmployeeController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> deleteEmployeeById(@PathVariable("id") int id) {
+    public ResponseEntity<Boolean> deleteEmployeeById(@PathVariable("id") int id, HttpServletRequest request) {
         try{
-            employeeService.deleteEmployeeById(id);
+            int user_id = Integer.parseInt(getTokenInfo.getId(request));
+            employeeService.deleteEmployeeById(id, user_id);
             return ResponseEntity.ok(true);
         }catch (Exception e) {
             return ResponseEntity.status(500).body(false);
@@ -74,9 +81,10 @@ public class EmployeeController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Boolean> updateEmployeeDetailsById(@PathVariable("id") int id, @RequestBody EmployeeDetails employeeDetails) {
+    public ResponseEntity<Boolean> updateEmployeeDetailsById(@PathVariable("id") int id, @RequestBody EmployeeDetails employeeDetails, HttpServletRequest request) {
         try{
-            employeeService.updateEmployeeDetailsById(id, employeeDetails);
+            int user_id = Integer.parseInt(getTokenInfo.getId(request));
+            employeeService.updateEmployeeDetailsById(id, employeeDetails, user_id);
             return ResponseEntity.ok(true);
         }catch (Exception e) {
             return ResponseEntity.status(500).body(false);

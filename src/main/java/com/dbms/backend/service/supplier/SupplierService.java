@@ -15,33 +15,33 @@ public class SupplierService {
     @Autowired
     SupplierRepo supplierRepo;
 
-    public void addSupplier(SupplierDetails supplieDetails) {
+    public void addSupplier(SupplierDetails supplieDetails, int user_id) {
         try{
-            supplierRepo.addSupplier(supplieDetails);
+            supplierRepo.addSupplier(supplieDetails, user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void updateSupplierById(int id, SupplierDetails supplierDetails) {
+    public void updateSupplierById(int id, SupplierDetails supplierDetails, int user_id) {
         try{
-            supplierRepo.updateSupplierById(id, supplierDetails);
+            supplierRepo.updateSupplierById(id, supplierDetails, user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void deleteSupplierById(int id) {
+    public void deleteSupplierById(int id, int user_id) {
         try{
-            supplierRepo.deleteSupplierById(id);
+            supplierRepo.deleteSupplierById(id, user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<SupplierDetails> getSupplier() {
+    public List<SupplierDetails> getSupplier(int user_id) {
         try{
-            return supplierRepo.getSupplier();
+            return supplierRepo.getSupplier(user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }

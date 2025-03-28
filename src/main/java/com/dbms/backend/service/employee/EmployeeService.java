@@ -15,43 +15,43 @@ import com.dbms.backend.repo.employee.EmployeeRepo;
 public class EmployeeService {
     @Autowired
     EmployeeRepo employeeRepo;
-    public List<EmployeeDetails> getEmployee() {
+    public List<EmployeeDetails> getEmployee(int user_id) {
         try{
-            List<EmployeeDetails> employeeDetails = employeeRepo.getEmployeeDetails();
+            List<EmployeeDetails> employeeDetails = employeeRepo.getEmployeeDetails(user_id);
             return employeeDetails;
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void addEmployee(EmployeeDetails employeeDetails) {
+    public void addEmployee(EmployeeDetails employeeDetails, int user_id) {
         try{
-            employeeRepo.addEmployee(employeeDetails);
+            employeeRepo.addEmployee(employeeDetails, user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public EmployeeCompleteDetails getEmployeeDetailsById(int id){
+    public EmployeeCompleteDetails getEmployeeDetailsById(int id, int user_id){
         try{
-            return employeeRepo.getEmployeeDetailsById(id).orElse(null);
+            return employeeRepo.getEmployeeDetailsById(id, user_id).orElse(null);
         }catch (Exception e) {
             System.out.println("At service layer");
             throw new RuntimeException(e);
         }
     }
     
-    public void deleteEmployeeById(int id) {
+    public void deleteEmployeeById(int id, int user_id) {
         try{
-            employeeRepo.deleteEmployeeById(id);
+            employeeRepo.deleteEmployeeById(id, user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void updateEmployeeDetailsById(int id, EmployeeDetails employeeDetails) {
+    public void updateEmployeeDetailsById(int id, EmployeeDetails employeeDetails, int user_id) {
         try{
-            employeeRepo.updateEmployeeDetailsById(id, employeeDetails);
+            employeeRepo.updateEmployeeDetailsById(id, employeeDetails, user_id);
         }catch (Exception e) {
             throw new RuntimeException(e);
         }

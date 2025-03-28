@@ -56,4 +56,8 @@ public class AuthenticationService {
         .token(jwtToken)
         .build();
   }
+  public void updateUserPassword(int id, String password){
+    String hashedPassword = passwordEncoder.encode(password);
+    repository.updateUserPasswordById(id, hashedPassword);
+  }
 }
