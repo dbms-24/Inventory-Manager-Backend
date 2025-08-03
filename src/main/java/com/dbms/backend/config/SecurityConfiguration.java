@@ -24,6 +24,7 @@ public class SecurityConfiguration {
   private final AuthenticationProvider authenticationProvider;
     private static final String[] WHITE_LIST_URL = {
     "/auth/authenticate",
+    "/health"
   };
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -32,4 +32,12 @@ public class HealthyController {
         return ResponseEntity.status(500).body(null);
       }
     }
+  @GetMapping("/health")
+    public ResponseEntity<String> serverHealthStatus(HttpServletRequest request) {
+        try{
+          return ResponseEntity.ok("Healthy Server");
+        }catch(Exception e){
+          return ResponseEntity.status(500).body("Server Unhealthy");
+      }
+    }
 }
