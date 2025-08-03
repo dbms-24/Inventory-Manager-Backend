@@ -1,17 +1,17 @@
-# Setting up the project 
+# Setting up the BackEnd
 
 ## Using Docker
 
 ### 1. Clone the repository
 
 ```sh
-git clone https://github.com/rash-27/backend.git
+git clone https://github.com/dbms-24/Inventory-Manager-Backend.git
 ```
 
 ### 2. Change directory to the project folder
 
 ```sh
-cd backend
+cd Inventory-Manager-Backend
 ```
 
 ### 3. Build the docker image
@@ -20,8 +20,8 @@ cd backend
 docker compose up --build
 ```
 
-### Now we can check the health of the application by visiting the following URL in the browser
+### Now we can check the health of the application by visiting the following URL in the browser / Postman
 
 ```sh
-http://localhost:8080/
+http://localhost:8080/health
 ```
