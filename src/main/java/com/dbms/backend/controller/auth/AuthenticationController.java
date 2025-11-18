@@ -3,7 +3,6 @@ package com.dbms.backend.controller.auth;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,7 @@ import com.dbms.backend.models.auth.AuthenticationResponse;
 import com.dbms.backend.models.auth.RegisterRequest;
 import com.dbms.backend.service.auth.AuthenticationService;
 
-@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
